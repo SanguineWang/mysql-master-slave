@@ -124,7 +124,7 @@ networks:
 #### 上传到服务器
 
 ```bash
-$ scp -r mysql  root@49.232.216.120:/home/service/
+$ scp -r mysql  root@{serverip}:/home/service/
 ```
 
 #### 构建容器
@@ -154,7 +154,7 @@ create user 'slave'@'%' indentified by '123456';
 grant file,select,replication slave on *.* to 'slave'@'%';
 ```
 
-从数据库运行配置
+从数据库通过账号连接主库
 
 ```sql
 CHANGE MASTER TO
@@ -178,8 +178,8 @@ start slave；
 show slave status\G
 *************************** 1. row ***************************
                Slave_IO_State: Waiting for master to send event
-                  Master_Host: 172.20.0.2
-                  Master_User: root
+                  Master_Host: *.*.*.*(主库地址)
+                  Master_User: ****（创建的账号）
                   Master_Port: 3306
                 Connect_Retry: 60
               Master_Log_File: replicas-mysql-bin.000004
@@ -187,8 +187,8 @@ show slave status\G
                Relay_Log_File: replicas-mysql-relay-bin.000002
                 Relay_Log_Pos: 881
         Relay_Master_Log_File: replicas-mysql-bin.000004
-             Slave_IO_Running: Yes
-            Slave_SQL_Running: Yes
+             Slave_IO_Running: Yes （这两行）
+            Slave_SQL_Running: Yes （都是yes才算启动主从）
               Replicate_Do_DB:
           Replicate_Ignore_DB:
            Replicate_Do_Table:
